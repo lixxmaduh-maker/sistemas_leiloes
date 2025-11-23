@@ -140,17 +140,61 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+    try {
+        String nome = cadastroNome.getText().trim();
+        String valorStr = cadastroValor.getText().trim();
+
+        if (nome.isEmpty() || valorStr.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Preencha Nome e Valor.", 
+                "Campos obrigatórios", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int valor;
+        try {
+            valor = Integer.parseInt(valorStr);
+            if (valor < 0) throw new NumberFormatException();
+        } catch (NumberFormatException nfe) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Valor inválido. Digite um número inteiro maior ou igual a zero.", 
+                "Valor inválido", 
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
         produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
+        produto.setValor(valor);
+        produto.setStatus("A Venda");
+
         ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
-        
+        boolean ok = produtodao.cadastrarProduto(produto); 
+
+        if (ok) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Cadastro realizado com sucesso!");
+            // limpa os campos depois de salvar
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+            cadastroNome.requestFocus();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Não foi possível cadastrar o produto.", 
+                "Falha ao salvar", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+
+    } catch (Exception ex) {
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Erro ao salvar: " + ex.getMessage(), 
+            "Erro", 
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+}
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
