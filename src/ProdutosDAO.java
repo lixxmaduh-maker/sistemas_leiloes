@@ -79,7 +79,6 @@ public class ProdutosDAO {
         }
 
     } catch (Exception e) {
-        e.printStackTrace();
     }
 
     return lista;
