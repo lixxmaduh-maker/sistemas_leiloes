@@ -1,40 +1,40 @@
-import java.sql.PreparedStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class ProdutosDAO {
-    private Connection getConnection() throws Exception {
-        String url  = "jdbc:mysql://127.0.0.1:3306/leiloes_db"
-                    + "?useSSL=false"
-                    + "&allowPublicKeyRetrieval=true"
-                    + "&serverTimezone=America/Sao_Paulo";
-        String user = "root";
-        String pass = "Panya121505@";
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        return java.sql.DriverManager.getConnection(url, user, pass);
+
+    private final Connection conn;
+
+    public ProdutosDAO() {
+        this.conn = new conectaDAO().connectDB();
     }
 
     public boolean cadastrarProduto(ProdutosDTO p) {
-        String sql = "INSERT INTO produto (nome, valor, status) VALUES (?, ?, ?)";
-        try (Connection c = getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, p.getNome());
             ps.setInt(2, p.getValor());
             ps.setString(3, p.getStatus());
-            int linhas = ps.executeUpdate();
-            return (linhas == 1);
+            ps.execute();
+            return true;
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
             return false;
         }
     }
 
-    public java.util.List<ProdutosDTO> listarProdutos() {
-        java.util.List<ProdutosDTO> lista = new java.util.ArrayList<>();
-        String sql = "SELECT id, nome, valor, status FROM produto ORDER BY id DESC";
-        try (Connection c = getConnection();
-             PreparedStatement ps = c.prepareStatement(sql);
+    public ArrayList<ProdutosDTO> listarProdutos() {
+        ArrayList<ProdutosDTO> lista = new ArrayList<>();
+
+        String sql = "SELECT id, nome, valor, status FROM produtos ORDER BY id DESC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 ProdutosDTO p = new ProdutosDTO();
                 p.setId(rs.getInt("id"));
@@ -43,9 +43,24 @@ public class ProdutosDAO {
                 p.setStatus(rs.getString("status"));
                 lista.add(p);
             }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Erro ao listar: " + e.getMessage());
         }
+
         return lista;
     }
+    
+    public boolean venderProduto(int id) {
+    String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ? AND status <> 'Vendido'";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        int linhas = ps.executeUpdate();
+        return linhas == 1;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+        }
+    }
+
 }
