@@ -15,19 +15,24 @@ import javax.swing.JOptionPane;
  *
  * @author Adm
  */
+
 public class conectaDAO {
-    
-    public Connection connectDB(){
-        Connection conn = null;
-        
+
+    public Connection connectDB() {
         try {
-        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=");
-            
-        } catch (SQLException erro){
-            JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
+            String url = "jdbc:mysql://127.0.0.1:3306/uc11?useSSL=false&serverTimezone=UTC";
+            String user = "root";
+            String pass = "Panya121505@";
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            return DriverManager.getConnection(url, user, pass);
+
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao conectar: " + e.getMessage());
+            return null;
         }
-        return conn;
     }
-    
 }
+
+
