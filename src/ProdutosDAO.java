@@ -58,9 +58,7 @@ public class ProdutosDAO {
         int linhas = ps.executeUpdate();
         return linhas == 1;
     } catch (Exception e) {
-        e.printStackTrace();
         return false;
         }
     }
-
 }
