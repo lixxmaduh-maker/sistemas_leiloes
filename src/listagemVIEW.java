@@ -172,8 +172,14 @@ public class listagemVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+    try {
+        vendasVIEW v = new vendasVIEW();
+        v.setVisible(true);
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Erro ao abrir tela de vendas: " + e.getMessage(),
+            "Erro", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
