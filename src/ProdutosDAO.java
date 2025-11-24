@@ -1,23 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
-
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
-
 public class ProdutosDAO {
     private Connection getConnection() throws Exception {
-        String url  = "jdbc:mysql://127.0.0.1:3306/leiloes_db?useSSL=false&serverTimezone=UTC";
+        String url  = "jdbc:mysql://127.0.0.1:3306/leiloes_db"
+                    + "?useSSL=false"
+                    + "&allowPublicKeyRetrieval=true"
+                    + "&serverTimezone=America/Sao_Paulo";
         String user = "root";
-        String pass = "SUA_SENHA";
+        String pass = "Panya121505@";
         Class.forName("com.mysql.cj.jdbc.Driver");
         return java.sql.DriverManager.getConnection(url, user, pass);
     }
@@ -57,4 +49,3 @@ public class ProdutosDAO {
         return lista;
     }
 }
-
