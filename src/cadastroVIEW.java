@@ -191,7 +191,6 @@ public class cadastroVIEW extends javax.swing.JFrame {
             "Erro ao salvar: " + ex.getMessage(), 
             "Erro", 
             javax.swing.JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
         }
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
